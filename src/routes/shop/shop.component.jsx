@@ -4,8 +4,21 @@ import CategoriesPreview from '../categories-preview/categories-preview.componen
 import Category from '../category/category.component';
 
 import './shop.styles.scss';
+import { useDispatch } from 'react-redux';
+import { setCategoriesMap } from '../../store/categories/categories.action';
+import { useEffect } from 'react';
+import { getCategoriesAndDocuments } from '../../utils/firebase/firebase.utils';
 
 const Shop = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+      const getCategoriesMap = async () => {
+        const categoryMap = await getCategoriesAndDocuments('categories');
+        dispatch(setCategoriesMap(categoryMap))
+      };
+  
+      getCategoriesMap();
+    }, [dispatch]);
   return (
     <Routes>
       <Route index element={<CategoriesPreview />} />
